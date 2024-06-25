@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spotify App Analysis</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        p {
+            font-size: 16px;
+            line-height: 1.5;
+        }
+
+        textarea {
+            width: 95%;
+            height: 100px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #1DB954;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #14833b;
+        }
+
+        .positive-review {
+            font-weight: bold;
+            color: green;
+            margin-top: 20px;
+        }
+
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-bottom: 15px;
+        }
+
+        .recommendations {
+            margin-top: 20px;
+        }
+
+        .recommendations ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .recommendations ul li {
+            padding: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Spotify Review and Recommendation</h1>
+        <p>Spotify is a digital music service that gives you access to millions of songs. Play your favorite songs, podcasts, and albums free on Windows with Spotify. Stream the tracks you love instantly. To download the app, click <a href="https://www.spotify.com/de-en/download/other/">here!</a>. Now you have downloaded the app,type your review:</p>
+
+        <form action="/analyse" method="POST">
+            <textarea name="review" placeholder="What do you say about it..." value="{{request.form['review'] if request.form else '' }}" required></textarea>
+            <button type="submit">Submit</button>
+        </form>
+
+        <p class="positive-review">{{ text }}</p>
+        <p>You can now listen to your favorite track and get five other tracks recommended for you.</p>
+        
+        <form action="/recomend" method="POST">
+            <select name="trackSelect">
+                {% for track in track_names%}
+                        <option value="{{track}}">{{ track }}</option>
+                {% endfor%}
+            </select>
+            <button type="submit">Show Recommendations</button>
+        </form>
+        {% if reccos %}
+        <div class="recommendations">
+            <p>Recommended tracks for {{ song_title }}:</p>
+            <ul>
+                {% for recco in reccos%}
+                    <li>{{ recco }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
